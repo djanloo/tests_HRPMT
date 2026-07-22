@@ -117,22 +117,33 @@ def make_objective(kind, tgt, N, ranges, noise_frac, seed=0):
 
 
 CFG = {
-    "anodewaves.npy": dict(
-        kind="anode",
-        ranges=dict(lam=(1e6, 8e7), tau_rise=(5e-9, 150e-9), **{"for": (1.3, 40)},
-                    noise=(0.02, 0.6)),
-    ),
-    "culoculo.npy": dict(
-        kind="preamp",
-        ranges=dict(lam=(1e5, 1e7), tau_rise=(0.1e-6, 2e-6), **{"for": (1.3, 15)},
-                    noise=(1e-3, 0.1)),
-    ),
+    "signals/run_Cs-137_888.92.h5": dict(
+            kind="anode",
+            ranges=dict(lam=(1e6, 8e7), tau_rise=(5e-9, 150e-9), **{"for": (1.3, 40)},
+                        noise=(0.02, 0.6)),
+        ),
+    "signals/run_Cs-137_7900.h5": dict(
+                kind="anode",
+                ranges=dict(lam=(1e6, 8e7), tau_rise=(5e-9, 150e-9), **{"for": (1.3, 40)},
+                            noise=(0.02, 0.6)),
+            ),
+    "signals/run_Cs-137_17990.h5": dict(
+                kind="anode",
+                ranges=dict(lam=(1e6, 8e7), tau_rise=(5e-9, 150e-9), **{"for": (1.3, 40)},
+                            noise=(0.02, 0.6)),
+            ),
+    "signals/run_Cs-137_28100.h5": dict(
+                kind="anode",
+                ranges=dict(lam=(1e6, 8e7), tau_rise=(5e-9, 150e-9), **{"for": (1.3, 40)},
+                            noise=(0.02, 0.6)),
+            )
 }
 N_SEARCH, N_VALID, N_TRIALS = 600, 1000, 500
 
-
+import h5py 
 def load(fname):
-    d = np.load(fname).astype(float)
+    with h5py.File(fname) as f:
+        d = np.array(f['waveforms'])
     return d - np.median(d, axis=1, keepdims=True)
 
 
@@ -182,7 +193,7 @@ def fit_one(fname, cfg):
 
 def main():
     results = {}
-    fig, ax = plt.subplots(2, 3, figsize=(15, 8))
+    fig, ax = plt.subplots(5, 3, figsize=(15, 8))
     for row, (fname, cfg) in enumerate(CFG.items()):
         x, tgt, best, sv, svs = fit_one(fname, cfg)
         results[fname] = {k: v for k, v in best.items()}
