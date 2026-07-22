@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+# dati pesanti (recordings): non vanno in repo — 153M l'uno, oltre il limite GitHub
+*.h5
