@@ -1,42 +1,43 @@
-# Stimare la dose da un PMT in pile-up estremo — relazione ricostruita
-
-> **A chi è rivolta.** A chi ha fatto un triennio di fisica: conosce Poisson,
-> media/varianza, un po' di Fourier e di elettronica, ma *non* diamo per
-> scontato niente di specifico su fotomoltiplicatori, cumulanti o dosimetria.
-> Ogni "protagonista" (λ, η, il gain, i cumulanti…) viene presentato prima di
-> essere usato. La relazione è volutamente lunga e discorsiva: preferiamo
-> spiegare due volte piuttosto che saltare un passaggio.
-
+# High Rate PMT dose estimation
 ---
 
 ## Indice del ragionamento
 
-1. [Il problema, in una frase](#1-il-problema-in-una-frase)
-2. [Il rivelatore e i dati](#2-il-rivelatore-e-i-dati)
-3. [Il modello: rumore shot (Poisson filtrato)](#3-il-modello-rumore-shot-poisson-filtrato)
-4. [I cumulanti e il teorema di Campbell](#4-i-cumulanti-e-il-teorema-di-campbell)
-5. [I protagonisti: λ, ⟨A⟩/energia, il gain g](#5-i-protagonisti-λ-energia-il-gain-g)
-6. [Il regime di pile-up: l'occupancy λτ](#6-il-regime-di-pile-up-loccupancy-λτ)
-7. [L'idea chiave: statistiche *gain-free*](#7-lidea-chiave-statistiche-gain-free)
-8. [Chi è η, chi è λ: le stime, una per una](#8-chi-è-η-chi-è-λ-le-stime-una-per-una)
-9. [Il metodo Target e perché va corretto](#9-il-metodo-target-e-perché-va-corretto)
-10. [La pipeline di dose (il risultato principale)](#10-la-pipeline-di-dose-il-risultato-principale)
-11. [Come abbiamo verificato di non star sognando: simulazione e fit](#11-come-abbiamo-verificato-di-non-star-sognando-simulazione-e-fit)
-12. [Cosa NON si può misurare (limiti onesti)](#12-cosa-non-si-può-misurare-limiti-onesti)
-13. [**Spin-off**: il modello *ladder* della perdita di gain](#13-spin-off-il-modello-ladder-della-perdita-di-gain)
-14. [Cosa manca per chiudere davvero il conto](#14-cosa-manca-per-chiudere-davvero-il-conto)
-15. [File e bibliografia](#15-file-e-bibliografia)
+- [High Rate PMT dose estimation](#high-rate-pmt-dose-estimation)
+  - [Indice del ragionamento](#indice-del-ragionamento)
+  - [1. Il problema](#1-il-problema)
+  - [2. Il rivelatore e i dati](#2-il-rivelatore-e-i-dati)
+  - [3. Il modello: rumore shot (Poisson filtrato)](#3-il-modello-rumore-shot-poisson-filtrato)
+  - [4. I cumulanti e il teorema di Campbell](#4-i-cumulanti-e-il-teorema-di-campbell)
+    - [Cosa sono i cumulanti](#cosa-sono-i-cumulanti)
+    - [Il teorema di Campbell](#il-teorema-di-campbell)
+  - [5. I protagonisti: λ, energia, il gain g](#5-i-protagonisti-λ-energia-il-gain-g)
+  - [6. Il regime di pile-up: l'occupancy λτ](#6-il-regime-di-pile-up-loccupancy-λτ)
+  - [7. L'idea chiave: statistiche *gain-free*](#7-lidea-chiave-statistiche-gain-free)
+  - [8. Chi è η, chi è λ: le stime, una per una](#8-chi-è-η-chi-è-λ-le-stime-una-per-una)
+    - [λ — il rate. Due strade.](#λ--il-rate-due-strade)
+    - [η — l'energia media (gain-free).](#η--lenergia-media-gain-free)
+  - [9. Il metodo Target e perché va corretto](#9-il-metodo-target-e-perché-va-corretto)
+  - [10. La pipeline di dose (il risultato principale)](#10-la-pipeline-di-dose-il-risultato-principale)
+  - [11. Come abbiamo verificato di non star sognando: simulazione e fit](#11-come-abbiamo-verificato-di-non-star-sognando-simulazione-e-fit)
+  - [12. Cosa NON si può misurare (limiti onesti)](#12-cosa-non-si-può-misurare-limiti-onesti)
+  - [13. Spin-off: il modello *ladder* della perdita di gain](#13-spin-off-il-modello-ladder-della-perdita-di-gain)
+    - [Il meccanismo, a parole](#il-meccanismo-a-parole)
+    - [Il modello minimale (per capire il ginocchio)](#il-modello-minimale-per-capire-il-ginocchio)
+    - [Il modello ladder completo (niente approssimazioni)](#il-modello-ladder-completo-niente-approssimazioni)
+    - [Il ladder riproduce i dati reali](#il-ladder-riproduce-i-dati-reali)
+  - [14. Cosa manca per chiudere davvero il conto](#14-cosa-manca-per-chiudere-davvero-il-conto)
+  - [15. File e bibliografia](#15-file-e-bibliografia)
+    - [In una riga](#in-una-riga)
 
 ---
 
-## 1. Il problema, in una frase
+## 1. Il problema
 
 Abbiamo un **fotomoltiplicatore (PMT)** accoppiato a uno scintillatore, che
-guarda una sorgente radioattiva. Vogliamo misurare la **dose** (quanta
-radiazione arriva). Il problema è che la sorgente è così intensa che il PMT
+guarda una sorgente radioattiva. Vogliamo misurare la **dose**. Il problema è che la sorgente è così intensa che il PMT
 lavora a **rate altissimo**: gli impulsi prodotti dai singoli eventi
-**si sovrappongono continuamente**. Questo fenomeno si chiama **pile-up**.
-
+**si sovrappongono continuamente** (pile-up).
 Il modo classico di fare dosimetria — *"riconosci ogni impulso, misurane
 l'altezza, mettili in un istogramma"* (Pulse Height Analysis) — qui **non
 funziona**: gli impulsi non sono più separabili. Il segnale digitizzato
