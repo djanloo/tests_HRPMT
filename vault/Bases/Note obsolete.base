@@ -1,0 +1,13 @@
+filters:
+  or:
+    - file.hasTag("tipo/architettura")
+    - file.hasTag("tipo/approfondimento")
+    - file.hasTag("tipo/nota")
+    - file.hasTag("tipo/manuale")
+views:
+  - type: table
+    name: Per data di aggiornamento
+    order:
+      - updated
+      - file.name
+      - project

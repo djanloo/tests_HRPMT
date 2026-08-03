@@ -1,3 +1,11 @@
+---
+type: approfondimento
+project: frankenchiara
+status: in-corso
+updated: 2026-07-21
+tags: [tipo/approfondimento, progetto/frankenchiara]
+---
+
 # Caratterizzazione del rumore PMT come processo stocastico
 
 **Dati:** `anodewaves.npy`, `culoculo.npy` — ciascuno 1000 record × 2000 campioni,
@@ -8,7 +16,7 @@ Le forme d'onda registrate (10 record, normalizzati e impilati): **continuo** =
 `anodewaves` (fuzz veloce, τ~250 ns), **tratteggio** = `culoculo` (wandering
 lento, integrazione del preamp di carica, τ~µs).
 
-![segnali grezzi](signals.png)
+![segnali grezzi](img/signals.png)
 
 ---
 
@@ -73,7 +81,7 @@ lente *indipendenti* per finestra da 20 µs (§3). La correlazione tra due tracc
 con ~6 gradi di libertà ha spread di sampling `≈1/√6≈0.4` — esattamente lo 0.32
 osservato. Pochi "wiggle" per finestra ⇒ tante coincidenze.
 
-![test indipendenza](independence_test.png)
+![test indipendenza](img/independence_test.png)
 
 ---
 
@@ -218,7 +226,7 @@ con la `h` del preamp (`h_preamp`), che è la via pulita per una `h` arbitraria.
 **Validazione** (figura sotto): modello (rosso) vs dati (nero) su ACF, PSD e
 distribuzione di potenza per record.
 
-![validazione](model_validation.png)
+![validazione](img/model_validation.png)
 
 `anodewaves` combacia su tutti e tre i piani. `culoculo` combacia bene su
 potenza e corner; i tempi del preamp (`h_preamp`, rise/fall) si possono

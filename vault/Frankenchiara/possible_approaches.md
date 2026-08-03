@@ -1,3 +1,10 @@
+---
+type: nota
+project: frankenchiara
+updated: 2026-07-21
+tags: [tipo/nota, progetto/frankenchiara]
+---
+
 # PMT ad alto rate: modellizzazione stocastica del pile-up
 
 ## Problema

@@ -1,3 +1,11 @@
+---
+type: approfondimento
+project: frankenchiara
+status: in-corso
+updated: 2026-07-21
+tags: [tipo/approfondimento, progetto/frankenchiara]
+---
+
 # Cosa ho scoperto — revisione letteratura (`possible_approaches.md`) + test
 
 Riepilogo di: (a) cosa danno davvero i riferimenti citati per il nostro problema,

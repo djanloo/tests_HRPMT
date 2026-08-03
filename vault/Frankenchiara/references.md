@@ -1,3 +1,10 @@
+---
+type: riferimento
+project: frankenchiara
+updated: 2026-07-22
+tags: [tipo/riferimento, progetto/frankenchiara]
+---
+
 # Reading list — stima di rate/ampiezza da processi compound-Poisson (pile-up)
 
 Recuperata dagli agenti di ricerca (la deep-research è morta per limite di spesa

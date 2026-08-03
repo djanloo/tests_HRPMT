@@ -1,0 +1,11 @@
+filters:
+  and:
+    - file.hasTag("tipo/progetto")
+views:
+  - type: table
+    name: Progetti
+    order:
+      - file.name
+      - repo
+      - group
+      - updated
