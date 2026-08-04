@@ -1,9 +1,8 @@
 filters:
   or:
-    - file.hasTag("tipo/architettura")
-    - file.hasTag("tipo/approfondimento")
     - file.hasTag("tipo/nota")
-    - file.hasTag("tipo/manuale")
+    - file.hasTag("tipo/approfondimento")
+    - file.hasTag("tipo/riferimento")
 views:
   - type: table
     name: Per data di aggiornamento

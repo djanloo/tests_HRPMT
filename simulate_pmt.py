@@ -17,8 +17,14 @@ Two equivalent generators are provided:
                            "stochastic differential equation" form)
 
 Parameters below reproduce the two measured datasets (fs = 100 MS/s):
-  anodewaves : one-pole anode, tau_fall ~ 250 ns, deep pileup (lambda*tau >> 1)
-  culoculo   : charge-sensitive preamp (UNIPOLAR), rise ~0.7 us, fall ~2.4 us
+  FAST : the anode read across the ~50 ohm termination (V = R*I, no shaping)
+         -- one-pole, tau_fall ~ 250 ns, deep pileup (lambda*tau >> 1). This is
+         the signal the whole project works on; the reference dataset is
+         data/anode_waveforms/run_Cs-137_*.h5.
+  CSP  : charge-sensitive preamp downstream of the same anode (UNIPOLAR), rise
+         ~0.7 us, fall ~2.4 us -- csp.npy. Kept for reference only: the CSP
+         integrates and filters, so at high rate its bandwidth is gone long
+         before the interesting statistics are.
 
 Run directly for a self-check that the generated ACF time-constant and the
 per-record power CV match the measured values.
@@ -43,7 +49,7 @@ def h_preamp(n=1500, tau_rise=0.7e-6, tau_fall=2.4e-6):
     """Charge-sensitive preamp: it INTEGRATES the detector current, so the
     single-event response is UNIPOLAR -- fast rise (current integration) + slow
     exp fall (feedback RC). Bi-exponential, positive area (carries a DC term).
-    (culoculo. The 'bipolar' ACF zero-crossing was an artifact of per-record
+    (The 'bipolar' ACF zero-crossing was an artifact of per-record
     baseline subtraction on a signal whose tau_corr is a large fraction of the
     window, not a real bipolar shape.)"""
     t = np.arange(n) * DT
@@ -56,23 +62,29 @@ def h_preamp(n=1500, tau_rise=0.7e-6, tau_fall=2.4e-6):
 # --------------------------------------------------------------------------
 def simulate_events(lam, h, n_rec=1000, n_samp=2000,
                     ser_mean=1.0, ser_cv=0.5, noise_sigma=0.0,
-                    noise_tau=0.0, seed=0):
+                    noise_tau=0.0, spectrum=None, seed=0):
     """
     lam         event rate [Hz]
     h           impulse response array (peak-normalized)
     ser_cv      coeff. of variation of the single-event charge (Gamma marks);
                 0 = fixed charge, 1 = exponential (typical PMT SER ~ 0.3-0.5)
+    spectrum    energy_spectrum.Spectrum with MEASURED pulse heights (CAEN DDE);
+                overrides ser_cv, `ser_mean` still sets the mean charge
     noise_sigma electronic noise RMS [ADC]; white if noise_tau==0,
                 else Ornstein-Uhlenbeck colored with correlation time noise_tau
     returns     (n_rec, n_samp) array, per-record baseline removed
     """
     rng = np.random.default_rng(seed)
-    counts = rng.poisson(lam * DT, size=(n_rec, n_samp)).astype(float)
-    if ser_cv > 0:                                   # Gamma-distributed charges
-        k = 1.0 / ser_cv ** 2
-        counts *= rng.gamma(k, ser_mean / k, size=(n_rec, n_samp))
+    if spectrum is not None:
+        from energy_spectrum import poisson_marks
+        counts = poisson_marks(lam, DT, (n_rec, n_samp), ser_mean, spectrum, rng)
     else:
-        counts *= ser_mean
+        counts = rng.poisson(lam * DT, size=(n_rec, n_samp)).astype(float)
+        if ser_cv > 0:                               # Gamma-distributed charges
+            k = 1.0 / ser_cv ** 2
+            counts *= rng.gamma(k, ser_mean / k, size=(n_rec, n_samp))
+        else:
+            counts *= ser_mean
 
     nfft = 1 << int(np.ceil(np.log2(n_samp + len(h))))
     H = np.fft.rfft(h, n=nfft)
@@ -157,8 +169,8 @@ def plot_demo(anode, shaper, h_a, h_s, source="default"):
     for k in range(4):
         ax[0, 0].plot(t, anode[k] + k * 6 * anode.std(), lw=0.6)
         ax[1, 0].plot(t, shaper[k] + k * 6 * shaper.std(), lw=0.6)
-    ax[0, 0].set_title("anodewaves sim (1-pole)")
-    ax[1, 0].set_title("culoculo sim (charge preamp)")
+    ax[0, 0].set_title("FAST sim (1-pole anode)")
+    ax[1, 0].set_title("CSP sim (charge preamp)")
     for a_ in ax[:, 0]:
         a_.set_xlabel("t [us]"); a_.set_yticks([])
     ax[0, 1].plot(np.arange(len(h_a)) * DT * 1e6, h_a)
@@ -184,14 +196,14 @@ if __name__ == "__main__":
     # self-check: generated signals must reproduce the measured summary stats.
     # Gain is arbitrary -> noise given as a fraction of signal RMS (see report).
 
-    # anodewaves: tau_fall=250ns, deep pileup -> CV at the Gaussian floor ~0.17
+    # FAST: tau_fall=250ns, deep pileup -> CV at the Gaussian floor ~0.17
     a = _with_noise(simulate_events, 0.23, lam=3e7, h=h_onepole(), ser_cv=0.5, seed=1)
     tau_a, cv_a = acf_tau_1e(a) * 1e9, power_cv(a)
     print(f"anode-like : ACF 1/e = {tau_a:6.1f} ns (meas ~250)   CV = {cv_a:.3f} (meas 0.170)")
     assert 150 < tau_a < 400, tau_a
     assert 0.12 < cv_a < 0.24, cv_a
 
-    # culoculo: unipolar charge preamp, lambda~1.5MHz -> CV ~0.6 (above Gaussian floor)
+    # CSP: unipolar charge preamp, lambda~1.5MHz -> CV ~0.6 (above Gaussian floor)
     c = simulate_events(lam=1.5e6, h=h_preamp(), ser_cv=0.5, noise_sigma=0.0, seed=2)
     cv_c = power_cv(c)
     print(f"shaper-like: CV = {cv_c:.3f} (meas 0.635)")
@@ -207,7 +219,7 @@ if __name__ == "__main__":
     # plot using the OPTIMIZED parameters from fit_results.json when available
     fit = _fitted_params()
     if fit:
-        pa, pc = fit["anodewaves.npy"], fit["culoculo.npy"]
+        pa, pc = fit["FAST"], fit["CSP"]
         h_a = h_onepole(tau_rise=pa["tau_rise"], tau_fall=pa["tau_fall"])
         h_s = h_preamp(tau_rise=pc["tau_rise"], tau_fall=pc["tau_fall"])
         a = _with_noise(simulate_events, pa["noise_frac"], lam=pa["lam"], h=h_a, ser_cv=pa["ser_cv"], seed=1)

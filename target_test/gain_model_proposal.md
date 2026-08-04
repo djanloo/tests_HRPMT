@@ -79,85 +79,16 @@ info più il **segno** (polarità).
 
 ---
 
-# Modello minimale omogeneo del gain ad alto rate
+# Il modello ladder del gain (`gain_ladder.py`)
 
-*(Punto di partenza: N stadi, parametri omogenei. La versione multi-stadio
-completa/dinamica è più sotto come estensione.)*
+Ogni stadio ha la sua tensione, ottenuta risolvendo il circuito. Il partitore è una
+**rete a scala** di resistori (qui $R$ omogenei) su un alimentatore che tiene **fissa**
+la tensione totale $V_{HV}$, cioè $\sum_i V_i = V_{HV}$ sempre.
 
-## Ipotesi (tutte omogenee)
-- $N$ stadi, resistori del partitore **tutti uguali** $R$.
-- Corrente di bias del partitore $I_b = V_{HV}/(N R)$; tensione nominale per stadio $V_0 = I_b R = V_{HV}/N$.
-- Legge di dinodo **uguale per tutti**: $\delta(V) = a\,V^{k}$, con $k \approx 0.7\text{–}0.8$.
-- Gain nominale (a vuoto) $G_0 = (a\,V_0^{k})^{N}$.
-- Corrente d'anodo (segnale): $I_a = q\,n_0\,\lambda\,G$ (carica × p.e./evento × rate × gain).
-
-## Derivazione
-Il gain è il prodotto delle amplificazioni di stadio, $G=\prod_{i=1}^{N}\delta_i=a^{N}\big(\prod_i V_i\big)^{k}$.
-Il carico di segnale abbassa le tensioni; all'ordine dominante, nel caso omogeneo,
-ogni stadio subisce la **stessa frazione di caduta** $\rho$: $\;V_i \simeq V_0(1-\rho)$, con $\rho \equiv I_a/I_b$.
-Quindi $\;G = G_0(1-\rho)^{Nk}$, con $\rho = q\,n_0\,\lambda\,G/I_b$.
-È **auto-consistente** ($G$ compare anche dentro $\rho$); sostituendo:
-$\;G = G_0\big(1-\tfrac{q\,n_0\,\lambda}{I_b}\,G\big)^{Nk}$.
-
-## Comportamento
-Un'unica variabile di controllo: il **carico** $\rho = I_a/I_b$ (corrente d'anodo / corrente di bias).
-
-- **Basso rate** ($I_a \ll I_b$): $G \approx G_0$ (piatto). Linearizzato:
-  $G \approx G_0\,[\,1 - N k\,(q n_0 G_0/I_b)\,\lambda\,]$ → **droop lineare**, pendenza $\propto Nk/I_b$.
-- **Collasso**: al crescere di $\lambda$, $\rho \to 1$ e $G \to 0$. Poiché $I_a = q n_0 \lambda G$
-  e $G$ cala, **la corrente d'anodo si satura verso $\sim I_b$** (non può superare il bias).
-  Ginocchio a $\;\lambda_{\max} \sim I_b/(q\,n_0\,G_0)\;$ (dove $I_a \sim I_b$).
-
-Consistenza col brevetto: il limite "**max anode current 0.1 mA**" *è* la corrente
-di bias tipica ($V_{HV}\sim 1$ kV, $\Sigma R\sim 10$ MΩ → $I_b\sim 0.1$ mA). Collasso a $I_a\sim I_b$ ⇔ tetto a 0.1 mA.
-
-## Limite del modello minimale
-Con parametri **omogenei e caduta uniforme** il gain è **monotòno**: piatto →
-droop → collasso. **Niente "bump"** (la salita iniziale osservata). Il bump
-richiede l'unica rottura di omogeneità che conta: gli **ultimi** stadi salgono di
-tensione mentre i **primi** scendono (redistribuzione a segno opposto). È l'unico
-ingrediente da aggiungere, e solo lì, se/quando serve modellare la salita.
-
-## Forma risolta (per riferimento)
-$G = G_0\,e^{-c\lambda G}$ (versione con caduta esponenziale, $c = Nk\,q n_0/(\delta I_b)$)
-ha soluzione $G = W(c\lambda G_0)/(c\lambda)$ con $W$ la funzione di Lambert → gain
-$\approx$ costante a basso rate, poi $\sim \ln(\lambda)/\lambda$ ad alto rate. La forma
-$(1-\rho)^{Nk}$ dà un collasso più netto a $I_a\to I_b$. In entrambe: **un solo numero
-adimensionale governa tutto, $I_a/I_b$.**
-
-## Soluzione numerica e confronto coi dati (`gain_solve.py`)
-
-Con $g\equiv G/G_0$ e $r\equiv I_a^{(0)}/I_b = q n_0 \lambda G_0/I_b$ (carico a gain
-nominale), l'equazione è $g=(1-r g)^{Nk}$. La funzione $F(g)=g-(1-rg)^{Nk}$ è
-strettamente crescente ($F'=1+Nk\,r(1-rg)^{Nk-1}>0$) ⇒ **radice unica** (nessun
-equilibrio multiplo in questo ramo); risolta con brentq.
-
-![soluzione e fit](gain_solve.png)
-
-- **Sx**: gain relativo $g(r)$ — piatto per $r\ll1$, ginocchio a $r=1$, poi crollo.
-- **Centro**: $I_a/I_b = r\,g \to 1$ per $r\to\infty$ — **la corrente d'anodo si satura
-  alla corrente di bias** (il "tetto 0.1 mA" del brevetto).
-- **Dx**: i 3 run a stessa configurazione (gain $\propto \sqrt{\text{Msd}/\text{dose}}$)
-  cadono **sulla curva del modello** ($p=Nk=7.5$), fittando la sola scala di carico $\alpha$:
-
-| run | gain dati (rel) | gain modello (rel) | r = α·dose |
-|---|---|---|---|
-| 7900 | 1.000 | 1.000 | 2194 |
-| 17990 | 0.447 | 0.461 | 4996 |
-| 28100 | 0.309 | 0.302 | 7804 |
-
-Gain-drop 7900→28100: **misurato 3.2× , modello 3.3×**. Tutti i run stanno a
-$r\gg1$ (ben oltre il ginocchio) → **regime di collasso**, dove $g\propto 1/\lambda$
-($I_a$ clampata a $I_b$). Il ginocchio ($r\sim1$) e l'eventuale bump cadono a rate
-più bassi ($\sim$ centinaia di kcps), non campionati a HV fissa → servirebbe uno
-scan a HV fisso per testare la parte piatta e la salita.
-
-## Sistema accoppiato completo: drop diversi per stadio (`gain_ladder.py`)
-
-Qui **niente** approssimazione di caduta uniforme: ogni stadio ha la sua tensione,
-ottenuta risolvendo il circuito. Il partitore è una **rete a scala** di resistori
-(qui $R$ omogenei) su un alimentatore che tiene **fissa** la tensione totale
-$V_{HV}$, cioè $\sum_i V_i = V_{HV}$ sempre.
+Il meccanismo: ad alto rate la corrente d'anodo è confrontabile con la corrente di bias
+del partitore, gli elettroni moltiplicati la prelevano, le tensioni fra dinodi cambiano
+e con esse il gain. È un anello di retroazione — il gain compare dentro la corrente che
+lo perturba — quindi il sistema è non lineare e va risolto, non valutato.
 
 **Nodi.** Numeriamo i nodi $U_0=0$ (catodo), $U_1,\dots,U_N$ (dinodi), $U_{N+1}=V_{HV}$
 (anodo). La tensione acceleratrice dello stadio $i$ è il salto $V_i = U_i - U_{i-1}$,
@@ -186,7 +117,7 @@ con condizioni al contorno $U_0=0$, $U_{N+1}=V_{HV}$, e $I_0=q\,n_0\,\lambda$. I
 membro sinistro è il Laplaciano discreto (corrente netta dei resistori al nodo $i$),
 quello destro la corrente $t_i$ prelevata dal tubo. Sono **$N$ equazioni non lineari**
 accoppiate (ogni $U_i$ compare in tutti i fattori $\prod$ per gli stadi a valle) →
-risolte con `fsolve` + continuazione in $\lambda$. **Solubile senza problemi.**
+risolte con `fsolve` + continuazione in $\lambda$.
 
 *Check a vuoto* ($I_0=0$): resta $U_{i-1}-2U_i+U_{i+1}=0$ → rampa lineare,
 $V_i=V_{HV}/(N{+}1)$ uniforme. Il gain totale è $G=\prod_i\delta_i=a^{N}\big(\prod_i V_i\big)^{\kappa}$.
@@ -201,10 +132,16 @@ $V_i=V_{HV}/(N{+}1)$ uniforme. Il gain totale è $G=\prod_i\delta_i=a^{N}\big(\p
 2. **Ma il gain TOTALE resta monotòno decrescente — niente bump** (centro). Motivo
    netto: $G=a^{N}(\prod_i V_i)^{\kappa}$ e a **$\sum V_i=V_{HV}$ fissa** ogni
    redistribuzione a somma costante **abbassa $\prod_i V_i$** (disuguaglianza AM-GM)
-   → il gain può *solo* scendere. Il ladder scende **più lento** dell'uniform-drop
-   (la salita degli ultimi stadi compensa in parte), ma non risale mai.
-3. **Corrente d'anodo** (dx): $I_a$ supera $I_b$ dove il modello è spinto oltre
-   validità (lì il partitore è già saturo).
+   → il gain può *solo* scendere. La salita degli ultimi stadi rallenta la discesa, ma
+   non la inverte mai.
+3. **Corrente d'anodo** (dx): $I_a$ satura verso $I_b$ — non può superare la corrente
+   di bias del partitore. (Oltre, dove nella figura la supera, il modello è spinto fuori
+   validità: lì il partitore è già saturo.)
+
+**Cross-check col brevetto.** Il limite tipico "**max anode current 0.1 mA**" *è* la
+corrente di bias tipica: $V_{HV}\sim 1$ kV, $\Sigma R\sim 10$ MΩ → $I_b\sim 0.1$ mA. Il
+collasso a $I_a\sim I_b$ **è** quel tetto di targa, ricavato da un vincolo di circuito
+invece che da una tabella.
 
 **Conclusione forte:** il **bump non può nascere dalla redistribuzione omogenea a
 $V_{HV}$ fissa** — è un teorema (AM-GM), non un dettaglio numerico. Se il gain sale
@@ -255,7 +192,7 @@ a rate più alto, dentro il range misurabile). Lì la curvatura del ginocchio di
 
 # Proposal: Dynamic Multi-Stage Model of PMT Gain under High-Rate Operation
 
-*(Estensione completa — utile in seguito; per ora si parte dal modello minimale sopra.)*
+*(Estensione dinamica/stocastica del ladder risolto sopra — non ancora implementata.)*
 
 ## Motivation
 

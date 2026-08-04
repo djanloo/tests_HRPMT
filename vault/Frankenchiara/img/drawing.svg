@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="drawing.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="5.0457912"
+     inkscape:cx="391.11804"
+     inkscape:cy="160.33164"
+     inkscape:window-width="2880"
+     inkscape:window-height="1514"
+     inkscape:window-x="2869"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <symbol
+       id="ElectricSymbols.svg:g7416">
+      <title
+         id="title13784">Resistor_US</title>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 85.989582,-30.427067 v -2.116666"
+         id="path19526-7"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 84.666666,-33.0729 1.322916,0.529167"
+         id="path19526-7-6"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 85.989582,-38.893733 1.322916,0.529167"
+         id="path19526-7-6-7"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 84.666666,-35.189567 2.645833,1.058334"
+         id="path19526-7-6-6"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 87.312499,-34.131234 84.666666,-33.0729"
+         id="path19526-7-6-6-2"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 84.666666,-37.306233 2.645833,1.058334"
+         id="path19526-7-6-6-6"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 87.312499,-36.2479 -2.645833,1.058334"
+         id="path19526-7-6-6-2-1"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 87.312499,-38.364566 -2.645833,1.058334"
+         id="path19526-7-6-6-2-1-8"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 85.989582,-38.893733 V -41.0104"
+         id="path19528-5"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <title
+         id="title25576">Resistor_US</title>
+    </symbol>
+    <symbol
+       id="ElectricSymbols.svg:g7822">
+      <title
+         id="title13876">GND_connector</title>
+      <g
+         id="g9386-2"
+         transform="translate(-0.1336297,49.609373)">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6320-0"
+           d="m 35.852378,97.901027 h 2.645833"
+           style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6322-23"
+           d="m 36.381545,98.430197 h 1.5875"
+           style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           sodipodi:nodetypes="cc"
+           inkscape:connector-curvature="0"
+           id="path6324-75"
+           d="m 36.910711,98.959377 h 0.529167"
+           style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path6326-9"
+           d="m 37.175295,96.578117 v 1.32291"
+           style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+      </g>
+      <ellipse
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.256;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+         id="path5953-06"
+         cx="37.041668"
+         cy="146.1875"
+         rx="0.40116644"
+         ry="0.39901915" />
+      <title
+         id="title9024">GND_connector</title>
+    </symbol>
+    <symbol
+       id="ElectricSymbols.svg:g9386">
+      <title
+         id="title13864">GND</title>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 35.852378,97.901027 h 2.645833"
+         id="path6320"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 36.381545,98.430197 h 1.5875"
+         id="path6322"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 36.910711,98.959377 h 0.529167"
+         id="path6324"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 37.175295,96.578117 v 1.32291"
+         id="path6326"
+         inkscape:connector-curvature="0" />
+      <title
+         id="title8537">GND</title>
+    </symbol>
+    <marker
+       inkscape:collect="always"
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="TriangleInM-60-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleInM">
+      <path
+         transform="scale(-0.4)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path5871-62-6"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <symbol
+       id="ElectricSymbols.svg:current_source_3">
+      <title
+         id="title13850-3">Current_source</title>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 68.791666,81.364563 v 2.64584"
+         id="path6382-6-3-5"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         sodipodi:arc-type="arc"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+         id="path6384-7-5-6"
+         sodipodi:type="arc"
+         sodipodi:cx="68.791664"
+         sodipodi:cy="78.718727"
+         sodipodi:rx="2.6458333"
+         sodipodi:ry="2.6458333"
+         sodipodi:start="0.25088235"
+         sodipodi:end="2.8955399"
+         sodipodi:open="true"
+         d="m 71.354666,79.375578 a 2.6458333,2.6458333 0 0 1 -2.569391,1.988975 2.6458333,2.6458333 0 0 1 -2.559755,-2.00136" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 68.791666,73.427073 v 2.64583"
+         id="path6382-6-5-6-2"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         sodipodi:arc-type="arc"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+         id="path6384-7-9-9"
+         sodipodi:type="arc"
+         sodipodi:cx="68.791664"
+         sodipodi:cy="78.718742"
+         sodipodi:rx="2.6458333"
+         sodipodi:ry="2.6458333"
+         sodipodi:start="3.3805928"
+         sodipodi:end="6.0493328"
+         sodipodi:open="true"
+         d="m 66.221038,78.092391 a 2.6458333,2.6458333 0 0 1 2.577436,-2.019473 2.6458333,2.6458333 0 0 1 2.567006,2.032714" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#TriangleInM-60-3)"
+         d="m 68.791666,78.189573 v 1.852084"
+         id="path5718-7-5-61-1"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <title
+         id="title11630-2">Current_source</title>
+    </symbol>
+    <marker
+       inkscape:collect="always"
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="TriangleInM-60"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleInM">
+      <path
+         transform="scale(-0.4)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path5871-62"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <symbol
+       id="ElectricSymbols.svg:current_source_2">
+      <title
+         id="title1">ElectricSymbols.svg:current_source_2_inkscape_duplicate</title>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 74.083336,285.75002 v 2.64584"
+         id="path6382-6-3"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 74.083336,277.81253 v 2.64583"
+         id="path6382-6-5-6"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#TriangleInM-60)"
+         d="m 74.083336,282.57503 v 1.85209"
+         id="path5718-7-5-61"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:0.264999;stroke-linecap:round;stroke-linejoin:round"
+         id="path32"
+         cx="74.083336"
+         cy="283.10422"
+         r="2.6458337" />
+    </symbol>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <use
+       xlink:href="#ElectricSymbols.svg:g9386"
+       id="use1"
+       transform="rotate(-90,60.876936,24.91964)" />
+    <use
+       xlink:href="#ElectricSymbols.svg:g7416"
+       id="use1-8"
+       transform="rotate(90,44.602913,7.2346152)" />
+    <use
+       xlink:href="#ElectricSymbols.svg:current_source_2"
+       id="use1-7"
+       transform="rotate(-90,-42.506999,153.04094)" />
+    <use
+       xlink:href="#ElectricSymbols.svg:g7416"
+       id="use1-8-2"
+       transform="rotate(90,49.910724,12.542428)" />
+    <use
+       xlink:href="#ElectricSymbols.svg:current_source_2"
+       id="use1-7-3"
+       transform="rotate(-90,-37.199186,147.73312)" />
+    <use
+       xlink:href="#ElectricSymbols.svg:g7416"
+       id="use1-8-8"
+       transform="rotate(90,59.154991,21.786689)" />
+    <use
+       xlink:href="#ElectricSymbols.svg:g7416"
+       id="use1-8-8-7"
+       transform="rotate(-90,148.78667,-14.175809)" />
+    <use
+       xlink:href="#ElectricSymbols.svg:current_source_2"
+       id="use1-7-7"
+       transform="rotate(-90,-27.954922,138.48886)" />
+    <path
+       style="opacity:0.952869;fill:#241f31;stroke-width:0.2;stroke-linejoin:round;stroke:#000000;stroke-dasharray:0.2,0.60000001;stroke-dashoffset:0"
+       d="M 103.69583,36.4506 H 111.375"
+       id="path1" />
+    <path
+       style="opacity:0.952869;fill:#241f31;stroke:#000000;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:0.2, 0.6;stroke-dashoffset:0"
+       d="m 103.69584,48.621284 h 7.67917"
+       id="path1-9" />
+    <path
+       style="opacity:0.952869;fill:#241f31;stroke:#000000;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 82.26459,36.450606 V 48.794863"
+       id="path2" />
+    <path
+       style="opacity:0.952869;fill:#241f31;stroke:#000000;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 121.95203,36.450637 V 48.720705"
+       id="path3" />
+    <path
+       style="opacity:0.952869;fill:#241f31;stroke:#000000;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 92.88022,48.621285 V 36.450602"
+       id="path4" />
+    <path
+       style="opacity:0.952869;fill:#241f31;stroke:#000000;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 103.46355,48.621285 V 36.450602"
+       id="path5" />
+    <path
+       style="opacity:0.952869;fill:#241f31;stroke:#000000;stroke-width:0.2;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 111.36875,48.62128 V 36.4506"
+       id="path6" />
+  </g>
+</svg>

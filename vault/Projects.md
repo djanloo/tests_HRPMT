@@ -6,13 +6,10 @@ checkout_roots: [C:/Users/gbecuzzi/Desktop/progetti_criminali]
 tag_mirror: false
 types:
   progetto: {archetype: entry}
-  architettura: {archetype: static}
   decisioni: {archetype: log}
-  bug: {archetype: tracked, statuses: [aperto, in-corso, risolto, chiuso], open: [aperto, in-corso]}
-  approfondimento: {archetype: tracked, statuses: [aperto, in-corso, chiuso], open: [aperto, in-corso], ceiling: 500}
-  manuale: {archetype: static}
+  backlog: {archetype: static}
+  approfondimento: {archetype: tracked, statuses: [aperto, in-corso, chiuso], open: [aperto, in-corso]}
   nota: {archetype: static}
-  utente: {archetype: static}
   riferimento: {archetype: static}
 updated: 2026-08-03
 tags: [tipo/hub]
@@ -35,7 +32,24 @@ Una riga per progetto: risolve "lavoriamo su tests_HRPMT" in una cartella senza 
 |---|---|---|---|
 | [[Frankenchiara/Frankenchiara\|Frankenchiara]] | `djanloo/tests_HRPMT` | — | Frankenchiara, tests_HRPMT |
 
-Query pronte in `Bases/`: `Progetti`, `Bug aperti`, `Note obsolete`.
+Query pronte in `Bases/`: `Note obsolete` (cosa riverificare contro il codice, più vecchie in
+cima).
+
+## Una nota per soggetto
+
+Le note sono **soggetti**, non capitoli: si chiamano col nome della cosa di cui parlano
+(`Shot noise`, `Gain ladder`, `Spettro di ampiezza`) e si linkano fra loro. Niente prefissi
+di serie e niente numerazione — l'ordine di lettura sta nell'entry point del progetto, dove
+può cambiare senza rinominare nulla.
+
+Il corollario è che una nota va spezzata quando parla di due cose, non quando è lunga.
+
+**Niente sezioni "Collegamenti".** I link vivono **nel discorso**, dove una frase dice perché
+l'altra nota serve lì. Un elenco di rimandi in fondo produce un grafo quasi completamente
+connesso — in cui tutto è collegato a tutto e quindi nessun collegamento porta informazione —
+e duplica link che il corpo ha già. Se un rimando non si riesce a giustificare in mezza frase
+dentro il testo, non serve: Obsidian mostra già i backlink, e una nota a un hop di distanza è
+raggiungibile senza scriverlo.
 
 ## Schema delle note
 
@@ -44,9 +58,9 @@ radici dei tag sono in italiano.
 
 | campo | valori | su quali note |
 |---|---|---|
-| `type` | `hub`, `progetto`, `architettura`, `decisioni`, `backlog`, `bug`, `approfondimento`, `manuale`, `nota`, `utente`, `feedback`, `riferimento`, `toolbox` | tutte |
+| `type` | `hub`, `progetto`, `decisioni`, `backlog`, `approfondimento`, `nota`, `riferimento` | tutte |
 | `project` | slug, qui `frankenchiara` | tutte le note del progetto; omesso sull'hub |
-| `status` | `aperto`, `in-corso`, `risolto`, `chiuso` | solo `bug` e `approfondimento` |
+| `status` | `aperto`, `in-corso`, `chiuso` | solo `approfondimento` |
 | `updated` | `YYYY-MM-DD` | tutte |
 | `tags` | `tipo/<type>`, `progetto/<project>` | tutte |
 | `repo` | percorso del repository, qui `djanloo/tests_HRPMT` | solo `progetto` |
@@ -64,9 +78,16 @@ cerca le radici inglesi `type/`/`project/`, che qui non esistono. Tutti gli altr
 `vault.py doctor` restano attivi.
 
 Nessuna nota oltre le ~400 righe: oltre quella soglia non si carica più in contesto senza
-inquinarlo. Spezzala in un `Bug/` o in un approfondimento.
+inquinarlo. Se una nota ci arriva, quasi sempre parla di due soggetti — spezzala in due.
 
-`approfondimento` ha `ceiling: 500` perché un'indagine con tabelle e risultati arriva
-legittimamente più in là di una nota di memoria — serve a `REPORT.md`, 426 righe.
+`approfondimento` è il solo tipo tracciato: serve a un'indagine ancora aperta, quella che in
+un vault di software sarebbe un bug. Al momento non ce ne sono: il lavoro chiuso è diventato
+note di soggetto, e ciò che resta aperto sta in `Backlog.md`.
 
-Nuove note partono dal template corrispondente in `Templates/`.
+Niente `Templates/`: i template servivano una volta per progetto ed erano già istanziati.
+`/obsidian:project` li rigenera se un giorno il vault ospita un secondo progetto.
+
+**Cancellati il 2026-08-03**: il tipo `bug` con la sua cartella, il suo template e la sua Base
+(mai usati, e in un vault sperimentale-teorico non hanno senso); i tipi `architettura`,
+`manuale`, `utente`, `feedback`, `toolbox` (nessuna istanza). La nota *Architettura* è stata
+sostituita da `Codice.md`, che per un repo di script di analisi dice qualcosa di vero.

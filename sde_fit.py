@@ -11,7 +11,7 @@ Key differences from the deprecated fit_simulator.py:
   * because units are physical, we also match the ABSOLUTE variance [ADC^2],
     which pins the amplitude scale (ser_mean) instead of throwing it away.
 
-Targets: jeanluke/anode_waveforms/run_Cs-137_*.h5  (Am-241 excluded).
+Targets: data/anode_waveforms/run_Cs-137_*.h5  (Am-241 excluded).
 Fitted per run: lam [Hz], tau_rise [s], tau_fall [s], ser_mean [ADC], ser_cv.
 Run:  python sde_fit.py    -> sde_fit_results.json + sde_fit_validation.png
 """
@@ -31,7 +31,7 @@ from sde_pulse_sim import simulate_sde, FS, DT
 
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
-WFDIR = "jeanluke/anode_waveforms"
+WFDIR = "data/anode_waveforms"
 NREC_DATA = 4000                 # records loaded from each run
 N_SEARCH, N_VALID, N_TRIALS = 800, 2000, 250
 MAXLAG = 500                     # ACF lags used in the match (= 5 us)

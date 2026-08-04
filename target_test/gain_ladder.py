@@ -1,6 +1,7 @@
 """
-Full coupled nonlinear divider model with PER-STAGE voltages (no uniform-drop
-assumption). Homogeneous R and dynode law, but each stage solved self-consistently.
+Coupled nonlinear divider model with PER-STAGE voltages. Homogeneous R and dynode
+law, but each stage is solved self-consistently -- the per-stage drops come out very
+non-uniform (first stages starve, last ones rise), which is the whole point.
 
 Resistor ladder across a FIXED supply (total voltage conserved):
   nodes U_0=0 (cathode) ... U_{N+1}=V_HV (anode); resistor R between neighbours.
@@ -65,18 +66,10 @@ for j in sel:
 ax[0].axhline(V0, color="gray", ls=":", label="V0 (a vuoto)")
 ax[0].set_xlabel("stadio i"); ax[0].set_ylabel("V_i [V]")
 ax[0].set_title("Profilo tensioni per stadio (redistribuzione)"); ax[0].legend(fontsize=7)
-# (2) G(λ): full ladder vs uniform-drop
+# (2) G(λ): monotone decreasing -- no bump, by AM-GM at fixed sum(V_i)=V_HV
 ax[1].loglog(lams, Gs / G0, "-", lw=2, label="ladder (drop per-stadio)")
-# uniform-drop reference g=(1-r g)^{Nk}, r=q n0 λ G0/Ib
-from scipy.optimize import brentq
-p = N * KAPPA
-def g_unif(lam):
-    r = q * n0 * lam * G0 / Ib
-    hi = min(1.0, 1.0 / r) * (1 - 1e-12) if r > 0 else 1.0
-    return brentq(lambda g: g - (1 - r * g) ** p, 1e-14, hi) if r > 0 else 1.0
-ax[1].loglog(lams, [g_unif(l) for l in lams], "--", label="uniform-drop (1−rg)^{Nk}")
 ax[1].set_xlabel("λ [cps]"); ax[1].set_ylabel("G/G0")
-ax[1].set_title("Gain: ladder vs uniform-drop"); ax[1].legend(fontsize=8)
+ax[1].set_title("Gain totale: monotòno decrescente"); ax[1].legend(fontsize=8)
 # (3) anode current saturation + which stages rise/fall
 ax[2].loglog(lams, Ias / Ib, label="I_a/I_b (ladder)")
 ax[2].axhline(1, color="crimson", ls="--", label="I_a=I_b")

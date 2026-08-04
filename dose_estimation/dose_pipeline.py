@@ -24,7 +24,7 @@ from scipy.stats import skew, kurtosis
 
 FS = 100e6
 DT = 1.0 / FS
-WFDIR = os.path.join(os.path.dirname(__file__), "..", "jeanluke", "anode_waveforms")
+WFDIR = os.path.join(os.path.dirname(__file__), "..", "data", "anode_waveforms")
 E_LINE = {"Cs-137": 662.0, "Am-241": 59.5}          # keV (per la calibrazione energia)
 CAL_MCPS_PER_USVH = 1.0 / 540.0                     # Cs-137 2x2" NaI (Target)
 

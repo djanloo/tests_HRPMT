@@ -16,7 +16,7 @@ drift described by the passive-divider sag; used here as a gain diagnostic).
 We DON'T need the pedestal for Var/Msd/η/λ̂ (Var about per-record mean, Msd from
 differences). Sampling: fs assumed 100 MS/s (Δ=10 ns ≈ 4% of NaI τ≈230 ns → within
 the patent's Δ<5%τ requirement).  Ground truth in metadata: dose[µSv/h], activity,
-distance[cm], nuclide.  anodewaves.npy == run_Cs-137_28100.
+distance[cm], nuclide.
 """
 import glob, json, os
 import numpy as np
@@ -28,7 +28,7 @@ from scipy.signal import welch
 FS = 100e6
 DT = 1.0 / FS
 TAU_NAI = 230e-9                       # NaI(Tl) scintillation decay
-WFDIR = os.path.join(os.path.dirname(__file__), "..", "jeanluke", "anode_waveforms")
+WFDIR = os.path.join(os.path.dirname(__file__), "..", "data", "anode_waveforms")
 NREC = 6000                            # records per run (subset for speed)
 CAL_MCPS_PER_USVH = 1.0 / 540.0        # Target slide7: 1 Mcps ~ 540 µSv/h (Cs-137, 2x2 NaI)
 

@@ -91,11 +91,14 @@ ax[0].set_xlabel("λ / λ(889)  (∝ dose)"); ax[0].set_ylabel("gain relativo G/
 ax[0].set_title("Estimated gain vs rate")
 ax[0].legend(fontsize=8)
 
-# zoom sul regime dei dati (fit N=10,κ=0.75)
+# zoom sul regime dei dati (fit N=10,κ=0.75) — curva CONTINUA, non la spezzata sui 4 punti
 c, gmk, res = fit_scale(10, 0.75)
 drop_d, drop_m = g_data[0] / g_data[-1], gmk[0] / gmk[-1]
-ax[1].semilogy(lam / ref, g_data, "ko", ms=12, label="dati veri")
-ax[1].semilogy(lam / ref, gmk, "r^-", ms=9, label="ladder N=10, κ=0.75 (fit)")
+lam_fine = np.linspace(lam[0], lam[-1] * 1.02, 200)
+G_fine = gain_curve(lam_fine, c, 10, 0.75)
+G_fine /= gain_curve(np.array([ref]), c, 10, 0.75)[0]      # stesso anchor dei dati
+ax[1].semilogy(lam_fine / ref, G_fine, "r-", lw=2.2, label="ladder N=10, κ=0.75 (fit)")
+ax[1].semilogy(lam / ref, g_data, "ko", ms=12, label="dati veri", zorder=5)
 for i in range(len(lam)):
     ax[1].annotate(f"{g_data[i]:.3f}", (lam[i]/ref, g_data[i]),
                    textcoords="offset points", xytext=(6, 6), fontsize=8)

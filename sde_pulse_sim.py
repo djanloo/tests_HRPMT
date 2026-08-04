@@ -63,25 +63,35 @@ def single_event_response(tau_rise, tau_fall, n=None):
 
 
 def simulate_sde(lam, tau_rise, tau_fall, ser_mean, ser_cv, noise_sigma,
-                 n_rec=1000, n_samp=2000, polarity=1.0, seed=0):
+                 n_rec=1000, n_samp=2000, polarity=1.0, spectrum=None, seed=0):
     """Generate (n_rec, n_samp) waveforms in ADC units. Per-record mean removed
-    at the end (matches how the real DC-coupled runs are pre-processed)."""
+    at the end (matches how the real DC-coupled runs are pre-processed).
+
+    spectrum: an energy_spectrum.Spectrum (a MEASURED pulse-height histogram from
+    the CAEN DDE) to draw the marks from; `ser_mean` then sets the mean peak and
+    `ser_cv` is ignored (the spectrum carries its own width). Default None keeps
+    the Gamma marks -- adequate in deep pileup, wrong at low rate where the
+    individual pulse heights are resolved and must show the photopeaks."""
     rng = np.random.default_rng(seed)
     Phi = expm(_state_matrix(tau_rise, tau_fall) * DT)
     _, gpk = single_event_response(tau_rise, tau_fall)   # peak of a unit-jump pulse
 
     # per-bin injected charge into x1, scaled so a mark of value m -> pulse peak m.
-    # counts ~ Poisson(lam*dt); the summed mark of c iid Gamma(k, theta) draws is
-    # exactly Gamma(c*k, theta), so we draw the aggregate per bin in one shot.
-    counts = rng.poisson(lam * DT, size=(n_rec, n_samp))
-    if ser_cv > 0:
-        k = 1.0 / ser_cv ** 2
-        theta = ser_mean * ser_cv ** 2                   # mean = k*theta = ser_mean
-        shape = counts * k
-        marks = rng.standard_gamma(np.where(shape > 0, shape, 1.0)) * theta
-        marks[shape == 0] = 0.0
+    if spectrum is not None:
+        from energy_spectrum import poisson_marks
+        marks = poisson_marks(lam, DT, (n_rec, n_samp), ser_mean, spectrum, rng)
     else:
-        marks = counts * ser_mean
+        # counts ~ Poisson(lam*dt); the summed mark of c iid Gamma(k, theta) is
+        # exactly Gamma(c*k, theta), so draw the aggregate per bin in one shot.
+        counts = rng.poisson(lam * DT, size=(n_rec, n_samp))
+        if ser_cv > 0:
+            k = 1.0 / ser_cv ** 2
+            theta = ser_mean * ser_cv ** 2               # mean = k*theta = ser_mean
+            shape = counts * k
+            marks = rng.standard_gamma(np.where(shape > 0, shape, 1.0)) * theta
+            marks[shape == 0] = 0.0
+        else:
+            marks = counts * ser_mean
     inject = marks / gpk                                 # (n_rec, n_samp) jumps into x1
 
     X = np.zeros((n_rec, 2))

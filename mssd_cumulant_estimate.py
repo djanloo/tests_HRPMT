@@ -142,7 +142,7 @@ def main():
     validate()
     with open(DIR + "fit_results.json") as f:
         fit = json.load(f)
-    kinds = {"anodewaves.npy": "anode", "culoculo.npy": "preamp"}
+    kinds = {"FAST": "anode", "CSP": "preamp"}
     for fname, p in fit.items():
         y = np.load(DIR + fname).astype(float)
         run(y, fname, kinds[fname], p["tau_rise"], p["tau_fall"], p["ser_cv"])
