@@ -1,7 +1,7 @@
 ---
 type: nota
 project: frankenchiara
-updated: 2026-07-23
+updated: 2026-08-04
 tags: [tipo/nota, progetto/frankenchiara]
 ---
 
@@ -91,9 +91,12 @@ regge anche con una $h$ diversa. Nessun risultato del progetto ci passa.
 *Dieci record grezzi dei due canali, normalizzati e impilati. Continuo = **FAST**
 (fuzz veloce), tratteggio = **CSP** (wandering lento).*
 
-Sono **indipendenti**: non è uno la versione filtrata dell'altro, e la somiglianza
-apparente dei trend lenti è un artefatto — verifica rigorosa in
-[[Indipendenza dei due file]].
+Sono **indipendenti**: non è uno la versione filtrata dell'altro, e la somiglianza apparente
+dei trend lenti è un artefatto. Verificato a suo tempo con la coerenza spettrale (piatta al
+floor a ogni frequenza) e con un test allineati-vs-mescolati (distribuzioni identiche): la
+correlazione spuria nasce dai pochi gradi di libertà del CSP, $N_	ext{eff}pprox 6.6$
+oscillazioni indipendenti per finestra, che danno spread di campionamento $1/\sqrt{6}pprox0.4$
+— esattamente lo 0.32 osservato.
 
 ### Cosa sappiamo dei due canali
 

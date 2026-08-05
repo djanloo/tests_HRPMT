@@ -188,5 +188,19 @@ Forma della voce — data, cosa è stato deciso, perché, cosa è stato scartato
   Scartato: tenere le sezioni con la regola "solo link non già nel corpo" — è quello che avevo
   fatto il giorno prima, e restava un elenco di vicinanze topiche.
 
+- **2026-08-05** — cancellata la nota *Indipendenza dei due file* (decisione tua, nel commit
+  `rmvd useless stuff`); il risultato che conteneva è stato **riassorbito** in
+  [[Rivelatore e dati]].
+  Perché: era una nota da 50 righe su un solo risultato negativo — i canali FAST e CSP non
+  sono lo stesso segnale — che dopo il chiarimento sull'hardware è diventato quasi ovvio: sono
+  due punti di prelievo diversi, uno crudo e uno integrato ([[Catena di lettura]]), quindi che
+  siano indipendenti non stupisce più nessuno.
+  Cosa è stato conservato, e dove: la **spiegazione della correlazione spuria** —
+  $N_	ext{eff}pprox 6.6$ oscillazioni indipendenti per finestra danno spread di
+  campionamento $1/\sqrt{6}pprox 0.4$, contro lo 0.32 osservato — vive ora nel paragrafo di
+  [[Rivelatore e dati]] che dice che i due canali sono indipendenti. Serve ancora, perché lo
+  stesso $N_	ext{eff}$ piccolo è la ragione per cui $\kappa_4$ sul CSP è inservibile.
+  Ripulite le 4 referenze rimaste appese.
+
 Vedi [[Codice]] per lo stato attuale prodotto da queste decisioni, e
 [[Simulazione SDE]] per come è implementato il simulatore.

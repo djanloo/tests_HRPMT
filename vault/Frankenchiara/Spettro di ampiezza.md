@@ -41,7 +41,7 @@ E stando **al quadrato al denominatore**, l'errore esplode.
 **Dimostrato, non supposto:** anche una simulazione pulita con $10^4$ record e CV nota
 recupera male (`CV=0.8→1.1, 0.5→0.42, 0.3→fallisce`); sui dati veri è inutilizzabile.
 il FAST (gaussiano) non dà nulla sulla forma; il CSP neppure
-($N_\text{eff}\sim 7$ + artefatti, vedi [[Indipendenza dei due file]]).
+($N_\text{eff}\sim 7$ + artefatti).
 
 È un risultato negativo che vale la pena aver dimostrato: chiude una strada che
 sembrava aperta.

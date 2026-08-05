@@ -1,7 +1,7 @@
 ---
 type: nota
 project: frankenchiara
-updated: 2026-07-23
+updated: 2026-08-04
 tags: [tipo/nota, progetto/frankenchiara]
 ---
 

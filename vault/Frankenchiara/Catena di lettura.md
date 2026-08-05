@@ -161,7 +161,7 @@ portare informazione utile ad alto rate:
   stessa stima funziona ([[Stima del rate dai cumulanti]]);
 - in una finestra da 20 µs il CSP ha solo $N_\text{eff} \approx 6.6$ tempi di
   correlazione indipendenti, contro 67 dello shunt: pochissimi gradi di libertà, quindi
-  stime dei momenti alti rumorose e distorte ([[Indipendenza dei due file]]).
+  stime dei momenti alti rumorose e distorte.
 
 Dato: `csp.npy`. **Serve solo da riferimento** — per mostrare cosa succede quando si
 filtra, e come contro-prova che il modello shot-noise regge anche su una $h$ diversa

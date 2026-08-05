@@ -56,7 +56,6 @@ dal mezzo.
   empirico che ha sostituito la Gamma
 - [[Fit dei parametri]] — il fit Optuna, e le due lezioni pagate (rumore, rise-time)
 - [[Validazione a verità nota]] — i quattro livelli di verifica
-- [[Indipendenza dei due file]] — un risultato negativo verificato
 
 ## Memoria di progetto
 
