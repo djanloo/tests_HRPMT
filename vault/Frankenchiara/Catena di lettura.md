@@ -1,7 +1,7 @@
 ---
 type: nota
 project: frankenchiara
-updated: 2026-08-03
+updated: 2026-08-05
 tags: [tipo/nota, progetto/frankenchiara]
 ---
 
@@ -189,6 +189,61 @@ tutta la catena, non solo un numero.
 
 Manca **un solo dato**: il fondo scala vero dell'ADC (fogli 3–5 dei PDF, non ancora aperti).
 Con quello escono energia assoluta e guadagno assoluto senza dark run. Vedi [[Backlog]].
+
+## Il digitizer: CAEN DT5780
+
+Dichiarato dal committente il 2026-08-05: il digitizer — **e probabilmente anche l'alta
+tensione** — è un **CAEN DT5780**, *Dual Digital Multi Channel Analyzer (HV & Preamplifier PS)*.
+Non è fra i PDF in `Hardware/`, ma la scheda tecnica CAEN chiude o cambia diverse cose:
+
+| specifica DT5780 | cosa risolve qui |
+|---|---|
+| 2× digitizer **100 MS/s, 14 bit**, ingressi single-ended BNC | **conferma i 100 MS/s** (fin qui solo assunti, sostenuti dai 230 ns del NaI) **e i 14 bit** (fin qui dedotti dal massimo osservato 4363 > 4095) |
+| **range d'ingresso a 4 passi, configurabile via software** | un *secondo* controllo di guadagno, oltre al ×1/×4 della board di preamp |
+| **offset DC regolabile con un DAC a 16 bit su ogni ingresso** | è il meccanismo del piedistallo: 195 ADC = 1.19 % del fondo scala, 3764 = 22.97 % ([[Baseline]]) |
+| 2 canali **HV fino a ±5 kV**, uscite SHV | il "forse anche l'HV" è sì: una scatola fa entrambe le cose |
+| alimentazione preamp **±12 V / 100 mA e ±24 V / 50 mA** su DB9 | è ciò che alimenterebbe i `±V_ANL` della board di preamp |
+| 2 MCA digitali indipendenti da 16k, coincidenze/anticoincidenze | — |
+
+**Una corroborazione che era già nel repo e non avevo collegato:** l'export N42 fra gli spettri
+del DDE (`co60HPGE.xml`) dichiara `RadInstrumentModelName: DT5780P_358` e
+`RadInstrumentComponentName: CAEN MC2 Software`. Un DT5780 era già passato da queste parti.
+
+### Cosa questo cambia
+
+1. **I 100 MS/s non sono più un'assunzione.** Cade la voce di [[Backlog]] che chiedeva di
+   confermarli, e con essa il rischio di dover riscalare ogni τ e ogni λ di 1.54.
+2. **14 bit confermati** → il fondo scala è 16383, e con il range d'ingresso noto l'LSB è
+   determinato. La calibrazione assoluta (sotto) dipende ora da **un solo numero da chiedere**:
+   quale dei 4 range era selezionato.
+3. **Il baseline restorer è coerente**: la catena di firmware CAEN (DPP) ne ha uno con finestra
+   configurabile, ed è l'ipotesi che [[Baseline]] tiene in piedi.
+4. ⚠️ **Contraddice in parte la conclusione "la board è la Handheld"** che avevo tratto dagli
+   schematici. Le due cose però possono convivere: il DT5780 fornisce HV e alimentazione preamp
+   e fa la digitizzazione, mentre le board di preamp fanno il CSP/FAST — e la voce "alimentazione
+   preamp su DB9" dice proprio che è un uso previsto. Ma l'Handheld EVM ha un ADC **proprio**
+   (coppie LVDS D0..D13), quindi è un sistema autosufficiente. **Quale dei due ha digitizzato
+   questi run va confermato**, e la mia deduzione precedente va considerata non conclusiva.
+
+### La calibrazione assoluta, ora a un numero di distanza
+
+Con 14 bit, dal fotopicco Am-241 a 1146 ADC·campioni su 50 Ω ([[Misure a basso rate]]),
+$G_\text{el}=1$ e 10 pe/keV:
+
+| range d'ingresso | LSB | $G_\text{PMT}$ implicito |
+|---|---|---|
+| 0.5 Vpp | 30.5 µV | 7.3×10⁴ |
+| 1.4 Vpp | 85.4 µV | 2.1×10⁵ |
+| 3.7 Vpp | 225.8 µV | **5.4×10⁵** |
+| 9.5 Vpp | 579.8 µV | **1.4×10⁶** |
+
+Solo gli ultimi due danno un guadagno plausibile per un PMT a 10 stadi a −570 V. Quindi
+**sapere quale range era impostato chiude il guadagno assoluto** — e i due candidati restanti
+differiscono di 2.6×, che è meno dell'incertezza sui pe/keV. In pratica: *il guadagno assoluto è
+1–2×10⁶ e la calibrazione è già quasi fatta*.
+
+(I valori dei 4 range non li ho verificati sul manuale: quelli in tabella sono i tipici di
+questa famiglia. Va confermato insieme al range selezionato.)
 
 ## Elettronica di lettura
 

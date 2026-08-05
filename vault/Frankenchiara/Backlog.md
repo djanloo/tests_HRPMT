@@ -112,10 +112,26 @@ gratuito di cosa è cambiato e quando.
   ha il partitore **integrato** e due soli cavetti (RG174 rosso HV, giallo segnale), che è
   quello che l'handheld si aspetta su `DET_IN`; la S2580 è una base per PMT nudo, ed è wirata
   per **HV positiva** mentre lo Scionix è a polarità negativa.
-  **Il sampling rate resta assunto** (100 MS/s), ma non cieco: l'ACF 1/e misurata è 26
-  campioni e il decadimento del NaI(Tl) è 230 ns, quindi a 100 MS/s fanno 260 ns (13 % di
-  scarto, in eccesso come dev'essere) mentre a 65 MSPS farebbero 400 ns, cioè 1.7× il
-  cristallo. Da confermare a voce, non dai file.
+  ⚠️ **Da riaprire (2026-08-05):** il committente indica il digitizer come un **CAEN DT5780**.
+  L'esclusione della *base GammaStream* resta valida, ma **la conclusione sull'Handheld non è
+  più conclusiva**: DT5780 e board di preamp possono convivere (il DT5780 fornisce HV e
+  alimentazione preamp su DB9 e digitizza, le board fanno CSP/FAST), però l'Handheld EVM ha un
+  ADC **proprio** (coppie LVDS D0..D13) e quindi è autosufficiente. Da chiedere, non da dedurre.
+
+- [x] ~~Confermare il sampling rate.~~ **Chiuso il 2026-08-05: sono 100 MS/s**, dalla scheda
+  tecnica del **CAEN DT5780** (2× digitizer 100 MS/s, **14 bit**). Conferma anche i 14 bit, che
+  avevo dedotto dal massimo osservato 4363 > 4095. L'argomento indiretto sui 230 ns del NaI —
+  ACF 1/e = 26 campioni, che a 100 MS/s fanno 260 ns e a 65 MSPS ne farebbero 400, cioè 1.7× il
+  cristallo — era giusto.
+
+- [ ] **Quale dei 4 range d'ingresso del DT5780 era selezionato**, e i valori dei 4 range dal
+  manuale. Perché: è **l'unico numero che manca** per il guadagno assoluto del PMT. Con 14 bit e
+  50 Ω, il fotopicco Am-241 a 1146 ADC·campioni dà $G_\text{PMT}$ = 5.4×10⁵ con un range da
+  3.7 Vpp e 1.4×10⁶ con 9.5 Vpp; gli altri due range danno valori non plausibili per un tubo a
+  10 stadi a −570 V. I due candidati differiscono di 2.6×, **meno dell'incertezza sui pe/keV** —
+  quindi in pratica il guadagno assoluto è già **1–2×10⁶** e basta un numero per fissarlo. Vedi
+  [[Catena di lettura]]. Nota: il DT5780 ha anche un **offset DC con DAC a 16 bit per ingresso**,
+  che è il meccanismo del piedistallo — il suo valore per run serve a [[Baseline]].
 
 - [ ] Riconciliare la risoluzione assunta in `energy_spectrum.nai()`. Perché: ci sono tre
   numeri a 662 keV — **6.6%** dal testsheet del cristallo (s/n S1AB5195, misurato da
@@ -189,6 +205,28 @@ gratuito di cosa è cambiato e quando.
   il BLR disabilitato" — un cambio di configurazione, non un run in più. Serve anche il valore
   di `OFFSET` impostato dal DAC per ciascun run. Da dove partire: chi ha acquisito; nei
   metadati degli `.h5` non c'è (solo activity/distance/dose/nuclide).
+
+- [ ] **Ricevere e archiviare la mappa dei parametri firmware** (in arrivo dalla collega), e
+  confrontarla con le ipotesi di [[Baseline]]. Perché: è il documento che rende il baseline
+  restorer **invertibile**, e quindi la DC recuperabile per calcolo invece che per misura — il
+  che aggirerebbe il muro di `mean²/Var` senza acquisire niente di nuovo.
+  **Cosa cercare, in ordine di importanza:**
+  1. **baseline restorer**: attivo? lunghezza della finestra, velocità di aggiornamento,
+     esistenza di un *hold-off / inhibit* durante gli impulsi. Finestra corta senza inibit =
+     massima sottrazione in eccesso, ed è il meccanismo misurato (depressione di 10 ADC prima
+     *e* dopo gli impulsi ad alto rate);
+  2. **bit di polarità / invert input**: spiegherebbe perché vediamo impulsi positivi da un
+     anodo che fisicamente va in negativo, e sarebbe la risposta banale al "il segnale può
+     diventare negativo";
+  3. **valore di `OFFSET` del DAC per run**: fissa il piedistallo (195 per cinque run, 3764 per
+     il 616) e quindi il margine da zero — sul run 7900 sono solo **56 ADC**;
+  4. **filtro di sagomatura** (trapezio / CR-RC): se abilitato, l'uscita è bipolare per
+     costruzione e un pole-zero non compensato dà coda negativa;
+  5. **numero di bit e formato dei campioni** (signed o unsigned): il massimo osservato è 4363,
+     quindi **non sono 12 bit**; dai nomi delle net dell'handheld (D0..D13) sembrano 14, ma va
+     confermato — entra in tutte le conversioni ADC→volt→carica della calibrazione assoluta
+     ([[Catena di lettura]]).
+  Da dove archiviarla: `Hardware/` per il documento, e i valori per-run in [[Baseline]].
 
 Ciò che è diventato una vera decisione va invece in [[Frankenchiara/Decisioni|Decisioni]]; ciò
 che è diventato un'indagine aperta diventa una nota `approfondimento` con `status`.

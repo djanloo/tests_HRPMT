@@ -2,7 +2,7 @@
 type: approfondimento
 project: frankenchiara
 status: in-corso
-updated: 2026-08-04
+updated: 2026-08-05
 tags: [tipo/approfondimento, progetto/frankenchiara]
 ---
 
@@ -81,8 +81,10 @@ c'è.
 - il livello a lungo termine viene inchiodato al setpoint → media 195.0 in tutti i run ✓
 - la fluttuazione di shot *dentro* il record sopravvive → medie per record che sparpagliano
   in proporzione all'ampiezza degli impulsi ✓
-- il setpoint è impostabile → spiega il run 616 a 3591.6 ADC più in alto ✓ (e il DAC `OFFSET`
-  è proprio il pezzo che lo imposta)
+- il setpoint è impostabile → spiega il run 616 a 3591.6 ADC più in alto ✓. Il pezzo che lo
+  imposta è ora identificato: il **CAEN DT5780 ha un offset DC con DAC a 16 bit su ogni
+  ingresso** ([[Catena di lettura]]). Su 14 bit di fondo scala, 195 ADC = 1.19 % e
+  3764 = 22.97 %
 
 Non compare in nessuno schematico perché è firmware. **Non l'ho verificato**: è un'ipotesi
 che spiega tutte le osservazioni, non una misura.
@@ -113,6 +115,75 @@ stupisce visto che l'Am è a rate più basso. Ma è solo energia: a ~10 pe/keV
 Am da 59.5 keV. **Gli impulsi del Cs sono ~12× più grandi**, quindi emergono dal rumore molto
 meglio nonostante il rate maggiore. Si vede nella tabella: il run 889 arriva a 1311 ADC di
 massimo, l'Am a 392.
+
+## Il BLR confermato da una misura indipendente, e perché il segnale può diventare negativo
+
+Domanda arrivata dalla collega: *a seconda dei parametri del firmware il segnale può diventare
+negativo — perché?* La risposta conferma il BLR da una strada che non c'entra con la media.
+
+### La misura: forma d'impulso media, allineata sui picchi
+
+| run | undershoot (frazione del picco) | livello 600 ns **prima** del picco |
+|---|---|---|
+| Am-241, 0.39 Mcps | 0.4 % | +0.2 ADC |
+| Cs-137 7900, ~15 Mcps | **13.1 %** | **−10.05 ADC** |
+
+Il punto decisivo è la colonna di destra: ad alto rate la traccia è depressa **anche prima**
+dell'impulso. Un undershoot da derivatore starebbe solo *dopo*, scalerebbe con l'impulso e ci
+sarebbe anche a basso rate. Qui invece **tutto il livello di quiete è tirato giù, e solo quando
+c'è attività**. È la firma di un baseline restorer che sottrae troppo.
+
+Il meccanismo, a parole: il BLR forza media = piedistallo, quindi l'area positiva degli impulsi
+**deve** essere bilanciata da un livello di quiete depresso. Più rate → più area di impulso →
+depressione più profonda.
+
+### Quanto siamo vicini allo zero
+
+| run | piedistallo | minimo | sotto il piedistallo | margine da 0 |
+|---|---|---|---|---|
+| Am-241 94 | 193 | 173 | 20 | 173 |
+| Cs-137 889 | 167 | 101 | 66 | 101 |
+| **Cs-137 7900** | **195** | **56** | **139** | **56** |
+| Cs-137 17990 | 194 | 88 | 106 | 88 |
+| Cs-137 28100 | 195 | 108 | 87 | 108 |
+
+Il rumore elettronico è σ ≈ 1.5 ADC, quindi 139 ADC sotto il piedistallo sono **90σ**: non è
+rumore. E il margine da zero sul run 7900 è **56 ADC su 14 bit**, cioè 0.3 % del fondo scala.
+**Non serve un meccanismo nuovo per andare negativi: basta un offset più basso o una depressione
+un po' più profonda.** (Clipping non ancora presente: i valori bassi sono sparsi, passo 1 ADC.)
+
+### Le cause possibili, in ordine di quanto i dati le sostengono
+
+1. **Il BLR sottrae troppo** (misurato sopra). Parametri che lo governano: lunghezza della
+   finestra, velocità di aggiornamento, presenza di un **hold-off durante gli impulsi**. Finestra
+   corta e nessun inibit = massima sottrazione in eccesso.
+2. **La polarità fisica è negativa comunque.** HV negativa e anodo su 50 Ω verso massa: gli
+   elettroni che arrivano tirano l'anodo *in negativo* ([[Catena di lettura]]). Quello che vediamo
+   positivo significa che qualcosa inverte, e se è un **bit di polarità** nel firmware, girarlo
+   mostra il segnale vero. È la strada più banale.
+3. **Un filtro di sagomatura abilitato** (trapezio, CR-RC): uscita **bipolare per costruzione**,
+   e un pole-zero non compensato dà una coda negativa. Dipende da decay time e flat top.
+4. **Signed vs unsigned**: se il firmware emette campioni signed già sottratti e il lettore li
+   legge unsigned, non si vedono negativi ma **wraparound**. Da controllare come integrità del
+   dato, visto che gli `.h5` sono `float64` — qualcuno ha convertito.
+
+### Un tentativo di recuperare la DC, e perché muore
+
+Se il BLR pinna la media, la **depressione** del livello di quiete *è* la DC rimossa. Misurata
+come (media − moda):
+
+| dose | 94 | 616 | 889 | 7900 | 17990 | 28100 |
+|---|---|---|---|---|---|---|
+| depressione [ADC] | 5.2 | 30.8 | **47.2** | 7.1 | −1.5 | −1.1 |
+
+Non cresce con la dose, e non è un difetto del ragionamento: in **pileup profondo non esiste più
+un livello di quiete**, la moda collassa sulla media perché la traccia è fuzz continuo. Quindi la
+depressione misura la DC solo dove gli impulsi sono risolti — **cioè dove non ci serve**. È la
+stessa forma di tutti gli altri limiti del progetto.
+
+La via che resta: **con la mappa dei parametri del firmware il BLR diventa invertibile**, e la DC
+si recupera per calcolo invece che per misura. È questo che rende la mappa un documento utile e
+non solo una scheda tecnica.
 
 ## Cosa la chiuderebbe
 

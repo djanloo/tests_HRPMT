@@ -1,7 +1,7 @@
 ---
 type: nota
 project: frankenchiara
-updated: 2026-08-03
+updated: 2026-08-05
 tags: [tipo/nota, progetto/frankenchiara]
 ---
 
@@ -211,7 +211,9 @@ E una reinterpretazione di $h(t)$:
   e ogni λ in Hz va riscalato di 1.54;
 - come è fatto il ramo **FAST** a valle di `DET IN` (è davvero un solo shunt, o c'è un
   buffer?);
-- **HV per run**: oggi si usa la mediana ADC come proxy (i 4 run a ~195 a stessa HV, il run
+- **HV per run**: il **CAEN DT5780** fornisce anche l'alta tensione (2 canali, ±5 kV, uscite
+  SHV — vedi [[Catena di lettura]]), quindi il valore **è impostato e leggibile dal software**,
+  non da indovinare. Oggi si usa la mediana ADC come proxy (i 4 run a ~195 a stessa HV, il run
   616 a 3764 no). Il testsheet dice −570 V, ma è la HV di collaudo Scionix, non dei run;
 - impedenza d'ingresso del digitizer, che insieme a $R_L = 100$ kΩ fissa il carico vero;
 - geometria sorgente-rivelatore e schermo, che fissano `photofrac`/`backscatter` del modello

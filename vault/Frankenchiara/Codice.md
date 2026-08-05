@@ -65,7 +65,7 @@ Vedi [[Gain ladder]].
 
 | file | cosa contiene |
 |---|---|
-| `data/anode_waveforms/*.h5` | **il dataset ufficiale**: i 6 run a dose nota (Am-241 + 5× Cs-137), 10⁴×2000 a 100 MS/s, ramo FAST |
+| `data/anode_waveforms/*.h5` | **il dataset ufficiale**: i 6 run a dose nota (Am-241 + 5× Cs-137), 10⁴×2000 a 100 MS/s (CAEN DT5780, 14 bit), ramo FAST |
 | `csp.npy` | caratterizzazione del ramo CSP (1000×2000) — solo riferimento, nessun risultato ci passa |
 | `data/2847 High Dose Rate Rev. 2.pdf` | documentazione del setup |
 | `US20210055429A1.pdf` | brevetto del metodo Target |
